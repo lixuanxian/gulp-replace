@@ -1,6 +1,6 @@
-var gulp = require('gulp');
-/** REMOVE ME **/ var replace = require('../../');
-/** USE ME **/ // var replace = require('gulp-replace');
+let gulp = require('gulp');
+/** REMOVE ME **/ let replace = require('../../');
+/** USE ME **/ // let replace = require('gulp-replace');
 
 gulp.task('replace', function() {
   // Do an in-place replace on file.txt

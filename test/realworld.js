@@ -1,21 +1,21 @@
 'use strict';
 
-var replacePlugin = require('../');
-var fs = require('fs');
-var should = require('should');
-var File = require('vinyl');
+let replacePlugin = require('../');
+let fs = require('fs');
+let should = require('should');
+let File = require('vinyl');
 
 describe('gulp-replace', function() {
   describe('real world use cases', function() {
     it('drop use strict on a buffer', function(done) {
-      var file = new File({
+      let file = new File({
         path: 'test/fixtures/strict.js',
         cwd: 'test/',
         base: 'test/fixtures',
         contents: fs.readFileSync('test/fixtures/strict.js')
       });
 
-      var stream = replacePlugin(/\s*(('use strict')|("use strict"));?/g, '');
+      let stream = replacePlugin(/\s*(('use strict')|("use strict"));?/g, '');
       stream.on('data', function(newFile) {
         should.exist(newFile);
         should.exist(newFile.contents);
@@ -29,20 +29,20 @@ describe('gulp-replace', function() {
     });
 
     it('replace script versions in HTML', function(done) {
-      var file = new File({
+      let file = new File({
         path: 'test/fixtures/scriptpage.html',
         cwd: 'test/',
         base: 'test/fixtures',
         contents: fs.readFileSync('test/fixtures/scriptpage.html')
       });
 
-      var versions = {
+      let versions = {
         'jquery': '2.1.1',
         'react': '0.10.0'
       };
 
       function replaceByVersion(match, packageName, offset, string) {
-        var version = versions[packageName];
+        let version = versions[packageName];
         // @todo Read in actual installed version of package
         // It will not match when using jquery: ^2.1.1 in package.json
 
@@ -55,7 +55,7 @@ describe('gulp-replace', function() {
         }
       }
 
-      var stream = replacePlugin(/-@@(.*?)Ver/g, replaceByVersion);
+      let stream = replacePlugin(/-@@(.*?)Ver/g, replaceByVersion);
       stream.on('data', function(newFile) {
         should.exist(newFile);
         should.exist(newFile.contents);

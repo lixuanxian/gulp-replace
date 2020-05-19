@@ -1,8 +1,8 @@
 'use strict';
 
-var Transform = require('readable-stream/transform');
-var rs = require('replacestream');
-var istextorbinary = require('istextorbinary');
+let Transform = require('readable-stream/transform');
+let rs = require('replacestream');
+let istextorbinary = require('istextorbinary');
 
 module.exports = function(search, _replacement, options) {
   if (!options) {
@@ -20,7 +20,7 @@ module.exports = function(search, _replacement, options) {
         return callback(null, file);
       }
 
-      var replacement = _replacement;
+      let replacement = _replacement;
       if (typeof _replacement === 'function') {
         // Pass the vinyl file object as this.file
         replacement = _replacement.bind({ file: file });
@@ -34,12 +34,12 @@ module.exports = function(search, _replacement, options) {
 
         if (file.isBuffer()) {
           if (search instanceof RegExp) {
-            file.contents = new Buffer(String(file.contents).replace(search, replacement));
+            file.contents =  Buffer.from(String(file.contents).replace(search, replacement));
           }
           else {
-            var chunks = String(file.contents).split(search);
+            let chunks = String(file.contents).split(search);
 
-            var result;
+            let result;
             if (typeof replacement === 'function') {
               // Start with the first chunk already in the result
               // Replacements will be added thereafter
@@ -47,7 +47,7 @@ module.exports = function(search, _replacement, options) {
               result = [ chunks[0] ];
 
               // The replacement function should be called once for each match
-              for (var i = 1; i < chunks.length; i++) {
+              for (let i = 1; i < chunks.length; i++) {
                 // Add the replacement value
                 result.push(replacement(search));
 
@@ -55,13 +55,15 @@ module.exports = function(search, _replacement, options) {
                 result.push(chunks[i]);
               }
 
+
               result = result.join('');
             }
             else {
               result = chunks.join(replacement);
             }
 
-            file.contents = new Buffer(result);
+
+            file.contents =  Buffer.from(result);
           }
           return callback(null, file);
         }
